@@ -12,8 +12,8 @@
  */
 
 package view;
-import controller.*;
 import java.util.Scanner;
+import controller.*;
 
 /**
  * @author artieman1
@@ -21,22 +21,18 @@ import java.util.Scanner;
  */
 public class StudentDataView {
 	private Scanner keyboard = new Scanner(System.in);
-	private String name;
-	private int age;
-	private String favoriteSchoolName;
-	private String petsName;
-	
+	private JsonControl control = new JsonControl();
 	
 	public StudentDataView() {}
 	
 	public void collectStudentInfo() {
 		System.out.println("Please enter your name");
-		name = keyboard.nextLine();
+		control.setName(keyboard.nextLine());
 		
 	}
 
 	public void printStudentInfoJson (String _jsonData) {
-		// This could have been passed as a Student obj and just printed but this
+		// This could have been passed as a Student obAhhj and just printed but this
 		// helps to demonstrate the difference between the printing of the key:value pair
 		// and the JSON parser in action.
 		System.out.println(_jsonData);

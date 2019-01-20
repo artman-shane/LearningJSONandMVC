@@ -24,16 +24,16 @@ import java.io.Serializable;
  * @author artieman1
  *
  */
-public class Learning {
+public class Learning implements Serializable{
 
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) implements Serializable {
+	public static void main(String[] args) {
 		Student student = new Student();
 		StudentDataView view = new StudentDataView();
-		PlayWithJSONController controller = new PlayWithJSONController(student, view); 
-
+		JsonControl controller = new JsonControl(student, view); 
+		controller.getUserInput();
 	}
 
 }

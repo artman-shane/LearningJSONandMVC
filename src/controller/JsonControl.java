@@ -11,7 +11,7 @@
  * Purpose: <What is the purpose of the file?>
  */
 
-
+package controller;
 import java.util.jar.Attributes.Name;
 
 import model.*;
@@ -27,10 +27,12 @@ public class JsonControl implements Serializable {
 	private Student student;
 	private StudentDataView view;
 	
+	public JsonControl() {}
+	
 	public JsonControl(Student _student, StudentDataView _view) {
 		this.student = _student;
 		this.view = _view;
-	}	
+	}
 	public void setName(String _name) {
 		student.setName(_name);
 	}
@@ -63,7 +65,7 @@ public class JsonControl implements Serializable {
 	}
 	
 	public void getUserInput() {
-		
+		view.collectStudentInfo();
 	}
 	
 	public void showStudentData() {
