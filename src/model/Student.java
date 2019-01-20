@@ -13,6 +13,8 @@
 
 
 package model;
+import view.*;
+
 import java.io.Serializable;
 
 /**
@@ -26,8 +28,13 @@ public class Student implements Serializable{
 	private String favSchool;
 	private String petName;
 	private String studentDataJson;
+	private StudentDataView view;
 	
 	public Student() {}
+	
+	public void addView(StudentDataView _view) {
+		view = _view;
+	}
 	
 	/**
 	 * Purpose: Return the name of the Student

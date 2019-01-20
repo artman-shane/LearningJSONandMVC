@@ -32,8 +32,15 @@ public class Learning implements Serializable{
 	public static void main(String[] args) {
 		Student student = new Student();
 		StudentDataView view = new StudentDataView();
-		JsonControl controller = new JsonControl(student, view); 
+		JsonControl controller = new JsonControl(); 
+		student.addView(view);
+		controller.addModel(student);
+		controller.addView(view);
+		view.addModel(student);
+		view.addController(controller);
+		
 		controller.getUserInput();
+		controller.showStudentData();
 	}
 
 }

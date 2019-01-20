@@ -13,6 +13,7 @@
 
 package controller;
 import java.util.jar.Attributes.Name;
+import java.util.ArrayList;
 
 import model.*;
 import view.*;
@@ -26,13 +27,18 @@ import java.io.Serializable;
 public class JsonControl implements Serializable {
 	private Student student;
 	private StudentDataView view;
+	private ArrayList<String> parsedJsonData = new ArrayList<String>();
 	
 	public JsonControl() {}
 	
-	public JsonControl(Student _student, StudentDataView _view) {
-		this.student = _student;
-		this.view = _view;
+	public void addModel(Student _student) {
+		student = _student;
 	}
+	
+	public void addView(StudentDataView _view) {
+		view = _view;
+	}
+	
 	public void setName(String _name) {
 		student.setName(_name);
 	}
@@ -74,11 +80,14 @@ public class JsonControl implements Serializable {
 			String result = generateJSONData(student);
 			student.setStudentDataJson(result);
 			view.printStudentInfoJson(getStudentDataJson());
+			
+			//parse out the JSON data
+			result = "";
+			result = parseJSONData(getStudentDataJson());
 			// Next we will display the KeyValueData
+			view.printStudentInfoKeyValue(result);
 
-			// view.printStudentInfoKeyValue();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			System.out.println("There was an error. Please try again..."); 
 		}
 	}
@@ -89,6 +98,16 @@ public class JsonControl implements Serializable {
 		}
 		catch (JSONException e) {
 			return "failure";
+		}
+	}
+	
+	public String parseJSONData(String _studentJsonData) throws JSONException {
+		try {
+			return JSONUtilities.parse(_studentJsonData).toString();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "false";
 		}
 	}
 
