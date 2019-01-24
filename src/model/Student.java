@@ -17,25 +17,22 @@ import view.*;
 
 import java.io.Serializable;
 
+import qcJSON.JSONException;
+import qcJSON.JSONUtilities;
+import qcJSON.ParseException;
+
 /**
+ * Purpose: This is the model classes of the MVC. It is here to construct
+ * 				the storage of the data into the model object.
+ * 
  * @author artieman1
  *
  */
 public class Student implements Serializable{
 
-	private String name;
+	private String name, favSchool, petName, studentDataJson;
 	private int age;
-	private String favSchool;
-	private String petName;
-	private String studentDataJson;
-	private StudentDataView view;
-	
-	public Student() {}
-	
-	public void addView(StudentDataView _view) {
-		view = _view;
-	}
-	
+			
 	/**
 	 * Purpose: Return the name of the Student
 	 * @return the name
@@ -43,6 +40,8 @@ public class Student implements Serializable{
 	public String getName() {
 		return name;
 	}
+	
+	
 	/**
 	 * Purpose: Set the name of the Student
 	 * @param name the name to set
@@ -50,6 +49,8 @@ public class Student implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	
 	/**
 	 * Purpose: Return the age of the Student
 	 * @return the age
@@ -57,6 +58,8 @@ public class Student implements Serializable{
 	public int getAge() {
 		return age;
 	}
+	
+	
 	/**
 	 * Purpose: Set the age of the Student
 	 * @param age the age to set
@@ -64,6 +67,8 @@ public class Student implements Serializable{
 	public void setAge(int age) {
 		this.age = age;
 	}
+	
+	
 	/**
 	 * Purpose: Return the favorite school of the student
 	 * @return the favSchool
@@ -71,6 +76,8 @@ public class Student implements Serializable{
 	public String getFavSchool() {
 		return favSchool;
 	}
+	
+	
 	/**
 	 * Purpose: Set the favorite school of the student
 	 * @param favSchool the favSchool to set
@@ -78,6 +85,8 @@ public class Student implements Serializable{
 	public void setFavSchool(String favSchool) {
 		this.favSchool = favSchool;
 	}
+	
+	
 	/**
 	 * Purpose: Return the pet name of the student
 	 * @return the petName
@@ -85,6 +94,8 @@ public class Student implements Serializable{
 	public String getPetName() {
 		return petName;
 	}
+	
+	
 	/**
 	 * Purpose: Set the pet name of the student
 	 * @param petName the petName to set
@@ -92,20 +103,51 @@ public class Student implements Serializable{
 	public void setPetName(String petName) {
 		this.petName = petName;
 	}
+	
+	
 	/**
 	 * Purpose: Get the student data in JSON format
 	 * @return the studentDataJson
 	 */
 	public String getStudentDataJson() {
-		return studentDataJson;
+		return this.studentDataJson;
 	}
+	
+	
 	/**
-	 * Purpose: Set the student data in JSON format
-	 * @param studentDataJson the studentDataJson to set
+	 * Question: should this be in the model and simply a setter here or is it okay to
+	 * 				manipulate the data in the model like this?
+	 * 
+	 * @param Student the value of the student object in this model
+	 * @throws JSONException in the event there is a problem with stringify process
+	 * 
 	 */
-	public void setStudentDataJson(String studentDataJson) {
-		this.studentDataJson = studentDataJson;
+	public void setStudentDataJson(Student _student) throws JSONException {
+		try {
+				this.studentDataJson = JSONUtilities.stringify(_student); 
+			}
+		catch (JSONException e) {
+			System.out.println("There was a failure when trying to stringify the object..");
+		}
+	}
+	
+	
+	/*
+	 * Question: Because this is not storing data, should I do this here or in the controller?
+	 * 
+	 * Purpose: to parse data from JSON back to a key/value pair
+	 * @param String for the stored JSON value in the model
+	 */
+	public String getParsedStudentDataJson(String _studentJsonData) throws JSONException {
+		try {
+			return JSONUtilities.parse(_studentJsonData).toString();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			return "false";
+		}
 	}
 
+
+	
 	
 }

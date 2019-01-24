@@ -21,95 +21,68 @@ import qcJSON.*;
 import java.io.Serializable;
 
 /**
+ * Purpose: this is to manage the application view and models.
+ * 				We call the views and get/set values in the model from here.
+ * 				The Controller know about both the view (StudentDataView) classes
+ * 				and the model (Student) classes and can control both.
+ * 
  * @author artieman1
  *
  */
 public class JsonControl implements Serializable {
 	private Student student;
 	private StudentDataView view;
-	private ArrayList<String> parsedJsonData = new ArrayList<String>();
 	
-	public JsonControl() {}
-	
-	public void addModel(Student _student) {
-		student = _student;
+	/**
+	 * Purpose: This is the constructor for the controller. We create an instance from the
+	 * 				main() method in Learning.java
+	 * 
+	 * @param Student is the model for the applicaiton. It is stored as student here
+	 * @param StudentDataView is the view for the application. It is stored as
+	 * 			view here
+	 * 
+	 */
+	public JsonControl(Student _model, StudentDataView _view) {
+		this.student = _model;
+		this.view = _view;
 	}
-	
-	public void addView(StudentDataView _view) {
-		view = _view;
-	}
-	
-	public void setName(String _name) {
-		student.setName(_name);
-	}
-	public String getName() {
-		return student.getName();
-	}
-	public int getAge() {
-		return student.getAge();
-	}
-	public void setAge(int _age) {
-		student.setAge(_age);
-	}
-	public String getFavSchool() {
-		return student.getFavSchool();
-	}
-	public void setFavSchool(String _favSchool) {
-		student.setFavSchool(_favSchool);
-	}
-	public String getPetName() {
-		return student.getPetName();
-	}
-	public void setPetName(String _petName) {
-		student.setPetName(_petName);
-	}
-	public String getStudentDataJson() {
-		return student.getStudentDataJson();
-	}
-	public void setStudentDataJson(String _studentDataJson) {
-		student.setStudentDataJson(_studentDataJson);
-	}
-	
+		
+	/**
+	 * Purpose: we get the user to input some values in the view
+	 */
 	public void getUserInput() {
 		view.collectStudentInfo();
 	}
 	
+	/**
+	 * Purpose: we display the user input'd data to the view.
+	 */
 	public void showStudentData() {
-		// First we will display the JSON data
 		try {
-			String result = generateJSONData(student);
-			student.setStudentDataJson(result);
-			view.printStudentInfoJson(getStudentDataJson());
-			
-			//parse out the JSON data
-			result = "";
-			result = parseJSONData(getStudentDataJson());
-			// Next we will display the KeyValueData
-			view.printStudentInfoKeyValue(result);
-
+			// First we will display the stringified JSON data
+			view.printStudentInfoJson(student.getStudentDataJson());
+			// Next we will display the Parsed JSON into a Key-Value Data
+			view.printStudentInfoKeyValue(student.getParsedStudentDataJson(student.getStudentDataJson()));
 		} catch (JSONException e) {
 			System.out.println("There was an error. Please try again..."); 
 		}
 	}
 
-	public String generateJSONData(Student _student) throws JSONException {
-		try {
-			return JSONUtilities.stringify(student);
-		}
-		catch (JSONException e) {
-			return "failure";
-		}
-	}
 	
-	public String parseJSONData(String _studentJsonData) throws JSONException {
+	/**
+	 * Purpose: this is where we set the values of the user input'd fields into the model
+	 * 				We do this here, instead of in the view, to conform to the MVC model
+	 */
+	public void storeUserInput() {
+		student.setName(view.getName());
+		student.setAge(view.getAge());
+		student.setFavSchool(view.getFavSchool());
+		student.setPetName(view.getPetName());
 		try {
-			return JSONUtilities.parse(_studentJsonData).toString();
-		} catch (ParseException e) {
+			student.setStudentDataJson(student);
+		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return "false";
 		}
 	}
-
-	
 }
